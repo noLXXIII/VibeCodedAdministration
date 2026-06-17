@@ -79,4 +79,10 @@ Die genaue Agenda der beiden Meetings war uns nicht im Detail bekannt — Vorsch
 
 ## Hinweis: Stylesheet
 
-Ein gemeinsames Stylesheet für die Frontend-Module folgt noch und wird in einer eigenen Datei behandelt — nicht Teil dieser Orga.md.
+Gemeinsames Stylesheet für die Frontend-Module liegt unter [`styles/Stylesheet.css`](styles/Stylesheet.css).
+
+## Team-Konventionen & Admin-Dashboard
+
+Die verbindliche Checkliste für alle Modul-Teams (Health-Check, API-Doku, Containerisierung, Routing, Styling, Modul-Registrierung) steht in [`docs/TEAM-CONVENTIONS.md`](docs/TEAM-CONVENTIONS.md).
+
+Das Admin-Dashboard (`dashboard/`) zeigt den Live-Status aller Module anhand der Registry in [`modules.json`](modules.json) — neue Module hinzufügen heißt: neuer Eintrag in `modules.json`, kein Code-Change am Dashboard.

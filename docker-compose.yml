@@ -1,0 +1,71 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --api.dashboard=true
+      - --api.insecure=true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik-Dashboard (nur für Debugging, nicht produktiv exposen)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+  dashboard:
+    build: ./dashboard
+    container_name: admin-dashboard
+    environment:
+      - MODULES_CONFIG=/app/modules.json
+    volumes:
+      - ./modules.json:/app/modules.json:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)
+      - traefik.http.services.dashboard.loadbalancer.server.port=3000
+    restart: unless-stopped
+
+  # --- Platzhalter für Team-Services ---
+  # Sobald die Team-Repos als Submodule eingebunden sind, ersetzen wir die
+  # build/image-Zeile durch den jeweiligen Build-Context bzw. das Image des Teams.
+  # Port- und Routing-Konvention siehe Orga.md / docs/TEAM-CONVENTIONS.md.
+
+  team1-kommunikation:
+    image: nginx:alpine # Platzhalter, bis Team-1-Repo vorliegt
+    container_name: team1-kommunikation
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.team1.rule=PathPrefix(`/chat`)
+      - traefik.http.services.team1.loadbalancer.server.port=8001
+    restart: unless-stopped
+
+  team2-dateimanagement:
+    image: nginx:alpine # Platzhalter, bis Team-2-Repo vorliegt
+    container_name: team2-dateimanagement
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.team2.rule=PathPrefix(`/files`)
+      - traefik.http.services.team2.loadbalancer.server.port=8002
+    restart: unless-stopped
+
+  team4-projektplanung:
+    image: nginx:alpine # Platzhalter, bis Team-4-Repo vorliegt
+    container_name: team4-projektplanung
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.team4.rule=PathPrefix(`/planning`)
+      - traefik.http.services.team4.loadbalancer.server.port=8004
+    restart: unless-stopped
+
+  team5-userverwaltung:
+    image: nginx:alpine # Platzhalter, bis Team-5-Repo vorliegt
+    container_name: team5-userverwaltung
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.team5.rule=PathPrefix(`/users`)
+      - traefik.http.services.team5.loadbalancer.server.port=8005
+    restart: unless-stopped

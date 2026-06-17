@@ -1,0 +1,38 @@
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--spacing-l);
+}
+
+.module-card {
+  border: var(--thin-border) solid var(--gray-color);
+  border-radius: var(--border-radius-l);
+  padding: var(--spacing-l);
+}
+
+.module-card h2 {
+  font-size: var(--font-size-text-big);
+  margin: 0 0 var(--spacing-s) 0;
+}
+
+.status-badge {
+  display: inline-block;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-s);
+}
+
+.status-up {
+  background-color: var(--success-color);
+  color: var(--font-color);
+}
+
+.status-down {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.status-unknown {
+  background-color: var(--gray-color);
+  color: white;
+}
