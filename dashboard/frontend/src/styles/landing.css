@@ -4,7 +4,7 @@ body {
 }
 
 [data-theme="dark"] body {
-  background-color: #0B0712;
+  background-color: #211B2E;
 }
 
 @keyframes fadeUp {
@@ -236,6 +236,11 @@ body {
   100% { transform: scale(2.2); opacity: 0; }
 }
 
+.lp-orbit-icon {
+  fill: none;
+  stroke: white;
+}
+
 .lp-orbit-label {
   font-size: 11px;
   font-weight: 600;
@@ -265,7 +270,7 @@ body {
 }
 
 [data-theme="dark"] .lp-mock {
-  background-color: #16101F;
+  background-color: #2A2438;
   border-color: rgba(246, 243, 245, 0.1);
 }
 
@@ -438,7 +443,7 @@ body {
 }
 
 [data-theme="dark"] .lp-fact-card {
-  background-color: #18112380;
+  background-color: #2A243899;
   border-color: rgba(246, 243, 245, 0.08);
 }
 
@@ -515,7 +520,7 @@ body {
 }
 
 [data-theme="dark"] .lp-module-chip {
-  background-color: #18112380;
+  background-color: #2A243899;
   border-color: rgba(246, 243, 245, 0.08);
 }
 
@@ -554,7 +559,7 @@ body {
 }
 
 [data-theme="dark"] .lp-testimonial-card {
-  background-color: #18112380;
+  background-color: #2A243899;
   border-color: rgba(246, 243, 245, 0.08);
 }
 

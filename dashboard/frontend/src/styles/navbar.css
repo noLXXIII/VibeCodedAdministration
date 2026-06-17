@@ -119,3 +119,24 @@
   align-items: center;
   justify-content: center;
 }
+
+.cpp-nav-login-btn {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 22px;
+  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 14px rgba(90, 88, 166, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cpp-nav-login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(90, 88, 166, 0.45);
+}
