@@ -55,6 +55,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.rule=PathPrefix(`/auth`)
+      - traefik.http.routers.auth.middlewares=auth-trailingslash
+      - traefik.http.middlewares.auth-trailingslash.redirectregex.regex=^(.*)/auth$$
+      - traefik.http.middlewares.auth-trailingslash.redirectregex.replacement=$${1}/auth/
       - traefik.http.services.auth.loadbalancer.server.port=9000
     restart: unless-stopped
 
