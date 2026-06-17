@@ -285,7 +285,7 @@ app.post('/api/modules/:route(.*)/redeploy', (req, res) => {
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-const FRONTEND_ROUTES = ['/', '/admin', '/status', '/impressum', '/datenschutz', '/about'];
+const FRONTEND_ROUTES = ['/', '/admin', '/status', '/impressum', '/datenschutz', '/about', '/planning', '/planning/*'];
 app.get(FRONTEND_ROUTES, (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 loadModules();
