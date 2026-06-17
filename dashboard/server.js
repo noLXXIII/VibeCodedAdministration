@@ -8,7 +8,7 @@ const POLL_INTERVAL_MS = 30000;
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/styles', express.static(path.join(__dirname, '..', 'styles')));
+app.use('/styles', express.static(process.env.STYLES_DIR || path.join(__dirname, '..', 'styles')));
 
 let modules = [];
 let statusByName = {};
