@@ -32,9 +32,11 @@ Details zu Token-Format, Issuer-URL und Validierungs-Endpunkt werden im 11-Uhr-M
 
 ## 5. Containerisierung
 
-Jedes Team liefert in seinem Repo:
+Das Frontend wird **zentral** in diesem Repo verwaltet und deployed — Team-Repos enthalten **kein** Frontend.
 
-- ein `Dockerfile` pro Service (ein Repo darf mehrere Microapps/Services enthalten, siehe Abschnitt 5a)
+Jedes Team liefert in seinem Repo ausschließlich das **Backend**:
+
+- ein `Dockerfile` für den Backend-Service (ein Repo darf mehrere Backend-Services enthalten, siehe Abschnitt 5a)
 - eine eigene `docker-compose.yml` im Repo-Root mit Traefik-Labels nach folgendem Schema je Service:
 
 ```yaml
@@ -45,7 +47,7 @@ services:
       - cpp-edge
     labels:
       - traefik.enable=true
-      - traefik.http.routers.<team>.rule=PathPrefix(`/<route>`)
+      - traefik.http.routers.<team>.rule=PathPrefix(`/api/<route>`)
       - traefik.http.services.<team>.loadbalancer.server.port=<port>
 
 networks:
@@ -54,6 +56,19 @@ networks:
 ```
 
 Das Gateway startet diese `docker-compose.yml` automatisch (siehe Abschnitt 10) — das Repo muss **lauffähig per `docker compose up -d` ohne weitere manuelle Schritte** sein.
+
+### Traefik-Pfad-Konvention für Backends
+
+Backend-Routen folgen dem Schema `/api/<route>`, wobei `<route>` dem Frontend-Pfad des Moduls entspricht:
+
+| Frontend-Pfad | Backend-Traefik-Pfad |
+|---|---|
+| `/planning` | `/api/planning` |
+| `/chat` | `/api/chat` |
+| `/files` | `/api/files` |
+| `/users` | `/api/users` |
+
+Das Frontend spricht das Backend also immer unter `/api/<route>` an — nie direkt über den Port.
 
 ### 5a. Mehrere Services in einem Repo
 
@@ -69,13 +84,13 @@ Damit Traefik (läuft im Orchestrator-Repo-Compose-Projekt) Container aus separa
 
 ## 6. Port- und Routing-Konvention
 
-| Team | Modul | Port | Route |
-|---|---|---|---|
-| 3 | Auth (Authentik) | 9000 | `/auth` |
-| 1 | Kommunikation | 8001 | `/chat` |
-| 2 | Dateimanagement | 8002 | `/files` |
-| 4 | Projektplanung | 8004 | `/planning` |
-| 5 | Userverwaltung | 8005 | `/users` |
+| Team | Modul | Port | Frontend-Route | Backend-Traefik-Route |
+|---|---|---|---|---|
+| 3 | Auth (Authentik) | 9000 | `/auth` | `/api/auth` |
+| 1 | Kommunikation | 8001 | `/chat` | `/api/chat` |
+| 2 | Dateimanagement | 8002 | `/files` | `/api/files` |
+| 4 | Projektplanung | 8004 | `/planning` | `/api/planning` |
+| 5 | Userverwaltung | 8005 | `/users` | `/api/users` |
 
 Diese Werte werden im 9-Uhr-Meeting final bestätigt.
 
