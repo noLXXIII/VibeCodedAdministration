@@ -44,21 +44,39 @@ app.get('/api/modules', (req, res) => {
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 app.get('/overview', (req, res) => {
-  const rows = modules
+  const cards = modules
     .map((mod) => {
       const status = statusByName[mod.name] || 'unknown';
-      return `<tr><td>${mod.name}</td><td>${status}</td></tr>`;
+      const feedbackClass =
+        status === 'up' ? 'feedback-success' : status === 'down' ? 'feedback-error' : 'feedback-in-progress';
+      const dotColor =
+        status === 'up' ? 'var(--success-color)' : status === 'down' ? 'var(--error-color)' : 'var(--in-progress-color)';
+      return `
+        <div class="overview-card rounded">
+          <div class="overview-card-header">
+            <span class="overview-dot" style="background:${dotColor}"></span>
+            <h2 class="overview-card-title">${mod.name}</h2>
+          </div>
+          <p class="text-main ${feedbackClass} overview-status">${status}</p>
+        </div>`;
     })
     .join('\n');
   res.send(`<!DOCTYPE html>
 <html lang="de">
-<head><meta charset="UTF-8"><title>Modul-Übersicht</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Modul-Übersicht</title>
+  <link rel="stylesheet" href="/styles/Stylesheet.css" />
+  <link rel="stylesheet" href="/overview.css" />
+</head>
 <body>
-  <h1>Modul-Übersicht</h1>
-  <table border="1" cellpadding="6">
-    <tr><th>Name</th><th>Status</th></tr>
-    ${rows}
-  </table>
+  <div class="container">
+    <h1 class="title-l mt-3">Modul-Übersicht</h1>
+    <p class="text-main mb-3">Aktueller Status aller Module der Collaboration &amp; Planning Platform</p>
+    <div class="overview-grid">
+      ${cards}
+    </div>
+  </div>
 </body>
 </html>`);
 });
