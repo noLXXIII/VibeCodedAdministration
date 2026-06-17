@@ -1,52 +1,174 @@
+body {
+  background-color: #F0EEF5;
+}
+
+[data-theme="dark"] body {
+  background-color: #0D0814;
+}
+
+.overview-header {
+  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
+  padding: var(--spacing-xxl) var(--margin-side) var(--spacing-xl);
+}
+
+.overview-header-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-l);
+}
+
+.overview-eyebrow {
+  margin: 0 0 var(--spacing-s) 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.overview-title {
+  margin: 0;
+  color: white;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.2;
+}
+
+.overview-summary {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--border-radius-l);
+  padding: var(--spacing-m) var(--spacing-l);
+  text-align: right;
+  backdrop-filter: blur(6px);
+}
+
+.overview-summary-count {
+  display: block;
+  color: white;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.overview-summary-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.overview-main {
+  padding: var(--spacing-xl) var(--margin-side) var(--spacing-xxl);
+}
+
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--spacing-l);
-  padding-bottom: var(--spacing-xxl);
 }
 
 .overview-card {
   background-color: white;
-  border: 1px solid rgba(16, 10, 25, 0.08);
-  box-shadow: 0 1px 2px rgba(16, 10, 25, 0.04), 0 8px 24px rgba(16, 10, 25, 0.06);
+  border-radius: var(--border-radius-l);
+  border: 1px solid rgba(16, 10, 25, 0.06);
+  box-shadow: 0 1px 2px rgba(16, 10, 25, 0.03), 0 12px 28px rgba(16, 10, 25, 0.06);
   padding: var(--spacing-l);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .overview-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(16, 10, 25, 0.06), 0 16px 32px rgba(16, 10, 25, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(16, 10, 25, 0.05), 0 20px 36px rgba(16, 10, 25, 0.1);
 }
 
 [data-theme="dark"] .overview-card {
   background-color: #1A1424;
   border-color: rgba(246, 243, 245, 0.08);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
-.overview-card-header {
+.overview-card-top {
   display: flex;
   align-items: center;
-  gap: var(--spacing-s);
+  justify-content: space-between;
+  margin-bottom: var(--spacing-m);
+}
+
+.overview-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overview-pill {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.pill-up {
+  background-color: rgba(107, 207, 127, 0.16);
+  color: #2F8F45;
+}
+
+.pill-down {
+  background-color: rgba(255, 107, 107, 0.14);
+  color: #D9434B;
+}
+
+.pill-unknown {
+  background-color: rgba(102, 96, 109, 0.14);
+  color: var(--gray-color);
+}
+
+[data-theme="dark"] .pill-up {
+  background-color: rgba(107, 207, 127, 0.18);
+  color: #6BCF7F;
+}
+
+[data-theme="dark"] .pill-down {
+  background-color: rgba(255, 107, 107, 0.18);
+  color: #FF6B6B;
 }
 
 .overview-card-title {
-  font-size: var(--font-size-text-big);
+  font-size: 19px;
   font-weight: 600;
+  margin: 0 0 2px 0;
+}
+
+.overview-card-route {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 13px;
+  color: var(--gray-color);
   margin: 0;
 }
 
-.overview-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.overview-card-footer {
+  margin-top: var(--spacing-m);
+  padding-top: var(--spacing-m);
+  border-top: 1px solid rgba(16, 10, 25, 0.06);
 }
 
-.overview-status {
-  margin: var(--spacing-s) 0 0 0;
+[data-theme="dark"] .overview-card-footer {
+  border-top-color: rgba(246, 243, 245, 0.08);
+}
+
+.overview-team {
+  font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 14px;
+  color: var(--accent-color);
 }

@@ -44,20 +44,23 @@ app.get('/api/modules', (req, res) => {
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 app.get('/overview', (req, res) => {
+  const upCount = modules.filter((mod) => statusByName[mod.name] === 'up').length;
   const cards = modules
     .map((mod) => {
       const status = statusByName[mod.name] || 'unknown';
-      const feedbackClass =
-        status === 'up' ? 'feedback-success' : status === 'down' ? 'feedback-error' : 'feedback-in-progress';
-      const dotColor =
-        status === 'up' ? 'var(--success-color)' : status === 'down' ? 'var(--error-color)' : 'var(--in-progress-color)';
+      const statusClass = `pill-${status}`;
+      const initial = mod.name.trim().charAt(0).toUpperCase();
       return `
-        <div class="overview-card rounded">
-          <div class="overview-card-header">
-            <span class="overview-dot" style="background:${dotColor}"></span>
-            <h2 class="overview-card-title">${mod.name}</h2>
+        <div class="overview-card">
+          <div class="overview-card-top">
+            <div class="overview-avatar">${initial}</div>
+            <span class="overview-pill ${statusClass}">${status}</span>
           </div>
-          <p class="text-main ${feedbackClass} overview-status">${status}</p>
+          <h2 class="overview-card-title">${mod.name}</h2>
+          <p class="overview-card-route">${mod.route}</p>
+          <div class="overview-card-footer">
+            <span class="overview-team">Team ${mod.team}</span>
+          </div>
         </div>`;
     })
     .join('\n');
@@ -70,13 +73,23 @@ app.get('/overview', (req, res) => {
   <link rel="stylesheet" href="/overview.css" />
 </head>
 <body>
-  <div class="container">
-    <h1 class="title-l mt-3">Modul-Übersicht</h1>
-    <p class="text-main mb-3">Aktueller Status aller Module der Collaboration &amp; Planning Platform</p>
+  <header class="overview-header">
+    <div class="overview-header-inner">
+      <div>
+        <p class="overview-eyebrow">Collaboration &amp; Planning Platform</p>
+        <h1 class="overview-title">Modul-Übersicht</h1>
+      </div>
+      <div class="overview-summary">
+        <span class="overview-summary-count">${upCount}/${modules.length}</span>
+        <span class="overview-summary-label">Module online</span>
+      </div>
+    </div>
+  </header>
+  <main class="overview-main">
     <div class="overview-grid">
       ${cards}
     </div>
-  </div>
+  </main>
 </body>
 </html>`);
 });
