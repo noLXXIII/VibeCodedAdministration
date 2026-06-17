@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const MODULES_CONFIG = process.env.MODULES_CONFIG || path.join(__dirname, '..', 'modules.json');
 const REPOS_DIR = process.env.REPOS_DIR || path.join(__dirname, 'repos');
 const DEPLOY_NETWORK = process.env.DEPLOY_NETWORK || 'cpp-edge';
+const PUBLIC_DOMAIN = process.env.PUBLIC_DOMAIN || 'hackathon.amogusdrip.de';
 const POLL_INTERVAL_MS = 30000;
 const DEPLOY_POLL_INTERVAL_MS = 60000;
 
@@ -19,6 +20,14 @@ let modules = [];
 let repos = [];
 let statusByName = {};
 let deployedShaByRepoId = {};
+let deployState = {};
+
+const COMPOSE_FILENAMES = ['docker-compose.yml', 'docker-compose.yaml', 'compose.yml', 'compose.yaml'];
+const RESERVED_ROUTES = ['/auth', '/admin', '/status', '/api', '/health', '/styles', '/'];
+
+function isReservedRoute(route) {
+  return RESERVED_ROUTES.some((reserved) => route === reserved || route.startsWith(`${reserved}/`));
+}
 
 function loadModules() {
   const raw = fs.readFileSync(MODULES_CONFIG, 'utf-8');
@@ -40,6 +49,18 @@ function run(cmd, args, opts = {}) {
   });
 }
 
+function logDeploy(repoId, status, message) {
+  if (!deployState[repoId]) deployState[repoId] = { status: 'pending', log: [] };
+  deployState[repoId].status = status;
+  deployState[repoId].log.push({ ts: new Date().toISOString(), message });
+  if (deployState[repoId].log.length > 50) deployState[repoId].log.shift();
+  console.log(`[deploy:${repoId}] ${status} — ${message}`);
+}
+
+function findComposeFile(repoPath) {
+  return COMPOSE_FILENAMES.find((f) => fs.existsSync(path.join(repoPath, f)));
+}
+
 async function checkHealth(mod) {
   try {
     const res = await fetch(mod.healthCheck, { signal: AbortSignal.timeout(5000) });
@@ -55,27 +76,59 @@ async function pollHealth() {
   }
 }
 
-async function deployRepo(repo) {
+async function deployRepo(repo, { force = false } = {}) {
   const repoPath = path.join(REPOS_DIR, repo.id);
   const branch = repo.branch || 'main';
   try {
     if (!fs.existsSync(path.join(repoPath, '.git'))) {
       fs.mkdirSync(REPOS_DIR, { recursive: true });
+      logDeploy(repo.id, 'cloning', `Klone ${repo.repoUrl} (Branch ${branch})...`);
       await run('git', ['clone', '--branch', branch, '--single-branch', repo.repoUrl, repoPath]);
+      logDeploy(repo.id, 'cloning', 'Repository erfolgreich geklont');
     } else {
+      logDeploy(repo.id, 'pulling', 'Prüfe auf neue Commits...');
       await run('git', ['fetch', 'origin', branch], { cwd: repoPath });
       await run('git', ['checkout', branch], { cwd: repoPath });
       await run('git', ['reset', '--hard', `origin/${branch}`], { cwd: repoPath });
     }
     const sha = await run('git', ['rev-parse', 'HEAD'], { cwd: repoPath });
-    if (deployedShaByRepoId[repo.id] === sha) return;
+    if (!force && deployedShaByRepoId[repo.id] === sha) {
+      deployState[repo.id] = deployState[repo.id] || { status: 'deployed', log: [] };
+      deployState[repo.id].status = 'deployed';
+      return;
+    }
 
-    await run('docker', ['compose', '-p', repo.id, 'up', '-d', '--build'], { cwd: repoPath });
+    const composeFile = findComposeFile(repoPath);
+    if (!composeFile) {
+      logDeploy(repo.id, 'error', `Keine ${COMPOSE_FILENAMES.join('/')} im Repo-Root (${repoPath}) gefunden — Deployment abgebrochen`);
+      return;
+    }
+
+    logDeploy(repo.id, 'building', `${composeFile} gefunden, starte docker compose up --build...`);
+    await run('docker', ['compose', '-f', composeFile, '-p', repo.id, 'up', '-d', '--build'], { cwd: repoPath });
     deployedShaByRepoId[repo.id] = sha;
-    console.log(`Deployed ${repo.id} at ${sha}`);
+    repo.lastDeployedAt = new Date().toISOString();
+    repo.lastDeployedSha = sha;
+    saveModules();
+    logDeploy(repo.id, 'deployed', `Deployment erfolgreich (Commit ${sha.slice(0, 7)})`);
   } catch (err) {
-    console.error(`Deploy failed for ${repo.id}:`, err.message);
+    logDeploy(repo.id, 'error', `Deployment fehlgeschlagen: ${err.message}`);
   }
+}
+
+async function undeployRepo(repo) {
+  const repoPath = path.join(REPOS_DIR, repo.id);
+  const composeFile = findComposeFile(repoPath);
+  if (composeFile) {
+    try {
+      await run('docker', ['compose', '-f', composeFile, '-p', repo.id, 'down', '-v'], { cwd: repoPath });
+    } catch (err) {
+      console.error(`Undeploy failed for ${repo.id}:`, err.message);
+    }
+  }
+  fs.rmSync(repoPath, { recursive: true, force: true });
+  delete deployState[repo.id];
+  delete deployedShaByRepoId[repo.id];
 }
 
 async function pollDeploys() {
@@ -84,26 +137,62 @@ async function pollDeploys() {
   }
 }
 
-app.get('/api/modules', (req, res) => {
-  const result = modules.map((mod) => ({
+function deriveUrls(route) {
+  const base = `https://${PUBLIC_DOMAIN}${route}`;
+  return {
+    healthCheck: `${base}/health`,
+    docsUrl: `${base}/openapi.json`,
+  };
+}
+
+function repoForModule(mod) {
+  return mod.repoId ? repos.find((repo) => repo.id === mod.repoId) : undefined;
+}
+
+function serializeModule(mod) {
+  const repo = repoForModule(mod);
+  return {
     ...mod,
     status: statusByName[mod.name] || 'unknown',
-  }));
-  res.json(result);
+    lastDeployedAt: repo ? repo.lastDeployedAt || null : null,
+    deployStatus: repo ? (deployState[repo.id] || { status: 'pending', log: [] }).status : null,
+  };
+}
+
+app.get('/api/modules', (req, res) => {
+  res.json(modules.map(serializeModule));
+});
+
+app.get('/api/repos', (req, res) => {
+  res.json(repos.map((repo) => ({ id: repo.id, repoUrl: repo.repoUrl, branch: repo.branch || 'main' })));
+});
+
+app.get('/api/modules/:route(.*)/deploy-log', (req, res) => {
+  const route = `/${req.params.route}`;
+  const mod = modules.find((m) => m.route === route);
+  if (!mod) return res.status(404).json({ error: 'Modul nicht gefunden' });
+  const repo = repoForModule(mod);
+  if (!repo) return res.json({ status: null, log: [] });
+  res.json(deployState[repo.id] || { status: 'pending', log: [] });
 });
 
 app.post('/api/modules', (req, res) => {
   const { name, team, route, healthCheck, docsUrl, adminUrl, repoId, repoUrl, branch } = req.body || {};
 
-  if (!name || !team || !route || !healthCheck || !docsUrl) {
-    return res.status(400).json({ error: 'name, team, route, healthCheck und docsUrl sind Pflichtfelder' });
+  if (!name || !team || !route) {
+    return res.status(400).json({ error: 'name, team und route sind Pflichtfelder' });
   }
   if (!route.startsWith('/')) {
     return res.status(400).json({ error: 'route muss mit / beginnen' });
   }
+  if (isReservedRoute(route)) {
+    return res.status(409).json({ error: `Pfad ${route} ist reserviert (Gateway/Auth/Admin)` });
+  }
   if (modules.some((mod) => mod.route === route)) {
     return res.status(409).json({ error: `Pfad ${route} ist bereits vergeben` });
   }
+
+  const derived = deriveUrls(route);
 
   let resolvedRepoId = repoId;
   if (repoUrl && !repos.some((repo) => repo.repoUrl === repoUrl)) {
@@ -114,100 +203,89 @@ app.post('/api/modules', (req, res) => {
     repos.push({ id: resolvedRepoId, repoUrl, branch: branch || 'main' });
   }
 
-  const newModule = { name, team, route, healthCheck, docsUrl };
+  const newModule = {
+    name,
+    team,
+    route,
+    healthCheck: healthCheck || derived.healthCheck,
+    docsUrl: docsUrl || derived.docsUrl,
+  };
   if (adminUrl) newModule.adminUrl = adminUrl;
   if (resolvedRepoId) newModule.repoId = resolvedRepoId;
 
   modules.push(newModule);
   saveModules();
-  res.status(201).json(newModule);
+
+  const repo = repoForModule(newModule);
+  if (repo) deployRepo(repo);
+
+  res.status(201).json(serializeModule(newModule));
+});
+
+app.put('/api/modules/:route(.*)', (req, res) => {
+  const route = `/${req.params.route}`;
+  const mod = modules.find((m) => m.route === route);
+  if (!mod) return res.status(404).json({ error: 'Modul nicht gefunden' });
+
+  const { name, team, route: newRoute, healthCheck, docsUrl, adminUrl } = req.body || {};
+  if (!name || !team || !newRoute) {
+    return res.status(400).json({ error: 'name, team und route sind Pflichtfelder' });
+  }
+  if (!newRoute.startsWith('/')) {
+    return res.status(400).json({ error: 'route muss mit / beginnen' });
+  }
+  if (newRoute !== route && isReservedRoute(newRoute)) {
+    return res.status(409).json({ error: `Pfad ${newRoute} ist reserviert (Gateway/Auth/Admin)` });
+  }
+  if (newRoute !== route && modules.some((m) => m.route === newRoute)) {
+    return res.status(409).json({ error: `Pfad ${newRoute} ist bereits vergeben` });
+  }
+
+  const derived = deriveUrls(newRoute);
+  mod.name = name;
+  mod.team = team;
+  mod.route = newRoute;
+  mod.healthCheck = healthCheck || derived.healthCheck;
+  mod.docsUrl = docsUrl || derived.docsUrl;
+  if (adminUrl) mod.adminUrl = adminUrl;
+  else delete mod.adminUrl;
+
+  saveModules();
+  res.json(serializeModule(mod));
+});
+
+app.delete('/api/modules/:route(.*)', async (req, res) => {
+  const route = `/${req.params.route}`;
+  const index = modules.findIndex((m) => m.route === route);
+  if (index === -1) return res.status(404).json({ error: 'Modul nicht gefunden' });
+
+  const mod = modules[index];
+  const repo = repoForModule(mod);
+  const stillUsesRepo = repo && modules.some((m, i) => i !== index && m.repoId === repo.id);
+
+  modules.splice(index, 1);
+  if (repo && !stillUsesRepo) {
+    repos = repos.filter((r) => r.id !== repo.id);
+    await undeployRepo(repo);
+  }
+  saveModules();
+  res.status(204).end();
+});
+
+app.post('/api/modules/:route(.*)/redeploy', (req, res) => {
+  const route = `/${req.params.route}`;
+  const mod = modules.find((m) => m.route === route);
+  if (!mod) return res.status(404).json({ error: 'Modul nicht gefunden' });
+  const repo = repoForModule(mod);
+  if (!repo) return res.status(400).json({ error: 'Dieses Modul hat kein verknüpftes Git-Repo' });
+
+  deployRepo(repo, { force: true });
+  res.status(202).json({ status: 'redeploy gestartet' });
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'landing.html')));
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
-
-app.get('/status', (req, res) => {
-  const upCount = modules.filter((mod) => statusByName[mod.name] === 'up').length;
-  const cards = modules
-    .map((mod) => {
-      const status = statusByName[mod.name] || 'unknown';
-      const statusClass = `pill-${status}`;
-      const initial = mod.name.trim().charAt(0).toUpperCase();
-      return `
-        <div class="overview-card">
-          <div class="overview-card-top">
-            <div class="overview-avatar">${initial}</div>
-            <span class="overview-pill ${statusClass}">${status}</span>
-          </div>
-          <h2 class="overview-card-title">${mod.name}</h2>
-          <p class="overview-card-route">${mod.route}</p>
-          <div class="overview-card-footer">
-            <span class="overview-team">Team ${mod.team}</span>
-          </div>
-        </div>`;
-    })
-    .join('\n');
-  res.send(`<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <title>Modul-Übersicht</title>
-  <link rel="stylesheet" href="/styles/Stylesheet.css" />
-  <link rel="stylesheet" href="/status.css" />
-  <script>
-    (function () {
-      var saved = localStorage.getItem('theme');
-      if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-    })();
-  </script>
-</head>
-<body>
-  <header class="overview-header">
-    <div class="overview-header-inner">
-      <div>
-        <p class="overview-eyebrow">Collaboration &amp; Planning Platform</p>
-        <h1 class="overview-title">Modul-Übersicht</h1>
-      </div>
-      <div class="overview-header-actions">
-        <div class="overview-summary">
-          <span class="overview-summary-count">${upCount}/${modules.length}</span>
-          <span class="overview-summary-label">Module online</span>
-        </div>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Theme umschalten">
-          <span class="theme-toggle-icon">🌙</span>
-        </button>
-      </div>
-    </div>
-  </header>
-  <main class="overview-main">
-    <div class="overview-grid">
-      ${cards}
-    </div>
-  </main>
-  <script>
-    var btn = document.getElementById('theme-toggle');
-    var icon = btn.querySelector('.theme-toggle-icon');
-    function applyIcon() {
-      icon.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
-    }
-    applyIcon();
-    btn.addEventListener('click', function () {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      applyIcon();
-    });
-  </script>
-</body>
-</html>`);
-});
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 loadModules();
 pollHealth();

@@ -75,8 +75,7 @@ body {
 .lp-logo-mark {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent-color), var(--pink-color));
+  object-fit: contain;
   display: inline-block;
 }
 
