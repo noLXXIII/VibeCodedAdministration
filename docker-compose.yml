@@ -54,6 +54,8 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.rule=PathPrefix(`/auth`)
+      - traefik.http.routers.auth.middlewares=auth-stripprefix
+      - traefik.http.middlewares.auth-stripprefix.stripprefix.prefixes=/auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
     restart: unless-stopped
 
@@ -87,6 +89,8 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)
+      - traefik.http.routers.dashboard.middlewares=dashboard-stripprefix
+      - traefik.http.middlewares.dashboard-stripprefix.stripprefix.prefixes=/admin
       - traefik.http.services.dashboard.loadbalancer.server.port=3000
     restart: unless-stopped
 
