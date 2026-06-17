@@ -24,9 +24,11 @@ Mindestens eines von beidem:
 
 REST über JSON. Kein GraphQL, kein XML.
 
-## 4. Auth (JWT)
+## 4. Auth (JWT via Authentik)
 
-Gemeinsames JWT-Format wird im 11-Uhr-Meeting mit Gruppe 5 fixiert. Gruppe 5 liefert Issuer/Validierung. **Platzhalter — wird nach dem Meeting hier ergänzt.**
+Team 3 betreibt eine zentrale **Authentik**-Instanz unter `/auth` (siehe Port-/Routing-Tabelle). Authentik ist der Identity-Provider und stellt die JWTs/Tokens aus, die alle Module zur Validierung von Requests nutzen.
+
+Details zu Token-Format, Issuer-URL und Validierungs-Endpunkt werden im 11-Uhr-Meeting mit Gruppe 5 fixiert (Gruppe 5 ist für die Anbindung von Userverwaltung/Rechten an Authentik verantwortlich). **Platzhalter — wird nach dem Meeting hier ergänzt.**
 
 ## 5. Containerisierung
 
@@ -46,6 +48,7 @@ labels:
 
 | Team | Modul | Port | Route |
 |---|---|---|---|
+| 3 | Auth (Authentik) | 9000 | `/auth` |
 | 1 | Kommunikation | 8001 | `/chat` |
 | 2 | Dateimanagement | 8002 | `/files` |
 | 4 | Projektplanung | 8004 | `/planning` |
@@ -71,8 +74,21 @@ Sobald ein Service lauffähig ist, trägt das Team einen Eintrag in `modules.jso
   "team": <Teamnummer>,
   "route": "/<route>",
   "healthCheck": "http://<service-name>:<port>/health",
-  "docsUrl": "http://<service-name>:<port>/openapi.json"
+  "docsUrl": "http://<service-name>:<port>/openapi.json",
+  "adminUrl": "http://<service-name>:<port>/admin"
 }
 ```
 
+`adminUrl` ist optional (siehe Abschnitt 9).
+
 Neues Modul hinzufügen = neuer Eintrag in dieser Datei. Kein Code-Change am Admin-Dashboard nötig.
+
+## 9. Admin-Bereich pro Modul (optional)
+
+Falls ein Modul eine eigene Verwaltungsoberfläche braucht (z. B. Userverwaltung von Gruppe 5, Forum-Moderation von Gruppe 1), gilt:
+
+- Der Admin-Bereich läuft als Teil des Moduls selbst, **nicht** als separater Service — eigener Pfad innerhalb der bestehenden Route, z. B. `/users/admin`, `/chat/admin`
+- Der Pfad wird im eigenen `Dockerfile`/Service genauso über Traefik geroutet wie die normale Route (kein zusätzliches Label-Schema nötig)
+- Das Modul trägt seine Admin-URL als `adminUrl` in seinem `modules.json`-Eintrag ein (siehe Abschnitt 8)
+- Das zentrale Admin-Dashboard (`/admin`, Team 3) bindet diese `adminUrl`s als Links/Karten ein — es duppliziert keine Modul-spezifische Verwaltungslogik, sondern verlinkt nur dorthin
+- Zugriffsschutz auf den eigenen Admin-Bereich liegt in der Verantwortung des jeweiligen Moduls (z. B. Rollen-Check über das gemeinsame JWT, siehe Abschnitt 4)

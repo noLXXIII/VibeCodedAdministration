@@ -16,6 +16,67 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
 
+  authentik-postgresql:
+    image: postgres:16-alpine
+    container_name: authentik-postgresql
+    environment:
+      - POSTGRES_PASSWORD=${AUTHENTIK_PG_PASS}
+      - POSTGRES_USER=${AUTHENTIK_PG_USER:-authentik}
+      - POSTGRES_DB=${AUTHENTIK_PG_DB:-authentik}
+    volumes:
+      - authentik-database:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  authentik-redis:
+    image: redis:alpine
+    container_name: authentik-redis
+    volumes:
+      - authentik-redis:/data
+    restart: unless-stopped
+
+  authentik-server:
+    image: ghcr.io/goauthentik/server:2024.8
+    container_name: authentik-server
+    command: server
+    environment:
+      - AUTHENTIK_REDIS__HOST=authentik-redis
+      - AUTHENTIK_POSTGRESQL__HOST=authentik-postgresql
+      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER:-authentik}
+      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB:-authentik}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASS}
+      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+    volumes:
+      - authentik-media:/media
+      - authentik-templates:/templates
+    depends_on:
+      - authentik-postgresql
+      - authentik-redis
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.auth.rule=PathPrefix(`/auth`)
+      - traefik.http.services.auth.loadbalancer.server.port=9000
+    restart: unless-stopped
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:2024.8
+    container_name: authentik-worker
+    command: worker
+    environment:
+      - AUTHENTIK_REDIS__HOST=authentik-redis
+      - AUTHENTIK_POSTGRESQL__HOST=authentik-postgresql
+      - AUTHENTIK_POSTGRESQL__USER=${AUTHENTIK_PG_USER:-authentik}
+      - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB:-authentik}
+      - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASS}
+      - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - authentik-media:/media
+      - authentik-templates:/templates
+    depends_on:
+      - authentik-postgresql
+      - authentik-redis
+    restart: unless-stopped
+
   dashboard:
     build: ./dashboard
     container_name: admin-dashboard
@@ -69,3 +130,9 @@ services:
       - traefik.http.routers.team5.rule=PathPrefix(`/users`)
       - traefik.http.services.team5.loadbalancer.server.port=8005
     restart: unless-stopped
+
+volumes:
+  authentik-database:
+  authentik-redis:
+  authentik-media:
+  authentik-templates:

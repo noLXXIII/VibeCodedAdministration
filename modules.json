@@ -1,6 +1,13 @@
 {
   "modules": [
     {
+      "name": "Auth (Authentik)",
+      "team": 3,
+      "route": "/auth",
+      "healthCheck": "http://authentik-server:9000/-/health/live/",
+      "docsUrl": "https://docs.goauthentik.io/"
+    },
+    {
       "name": "Kommunikation",
       "team": 1,
       "route": "/chat",

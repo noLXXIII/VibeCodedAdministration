@@ -15,6 +15,7 @@ function renderCard(mod) {
       <p class="mt-2">
         <a class="btn" href="${mod.route}">Öffnen</a>
         <a class="btn" href="${mod.docsUrl}" target="_blank" rel="noopener">API-Doku</a>
+        ${mod.adminUrl ? `<a class="btn" href="${mod.adminUrl}" target="_blank" rel="noopener">Admin</a>` : ''}
       </p>
     </div>
   `;
