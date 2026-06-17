@@ -63,7 +63,7 @@ Backend-Routen folgen dem Schema `/api/<route>`, wobei `<route>` dem Frontend-Pf
 
 | Frontend-Pfad | Backend-Traefik-Pfad |
 |---|---|
-| `/planning` | `/api/planning` |
+| `/planning` | `/cpp-api/planning` |
 | `/chat` | `/api/chat` |
 | `/files` | `/api/files` |
 | `/users` | `/api/users` |
@@ -89,7 +89,7 @@ Damit Traefik (läuft im Orchestrator-Repo-Compose-Projekt) Container aus separa
 | 3 | Auth (Authentik) | 9000 | `/auth` | `/api/auth` |
 | 1 | Kommunikation | 8001 | `/chat` | `/api/chat` |
 | 2 | Dateimanagement | 8002 | `/files` | `/api/files` |
-| 4 | Projektplanung | 8004 | `/planning` | `/api/planning` |
+| 4 | Projektplanung | 8004 | `/planning` | `/cpp-api/planning` |
 | 5 | Userverwaltung | 8005 | `/users` | `/api/users` |
 
 Diese Werte werden im 9-Uhr-Meeting final bestätigt.
