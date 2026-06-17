@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import ThemeToggle from '../components/ThemeToggle.jsx';
+import NavBar from '../components/NavBar.jsx';
+import HeroOrbit from '../components/HeroOrbit.jsx';
 import '../styles/landing.css';
 
 function Reveal({ children, className = '' }) {
@@ -33,15 +34,7 @@ function Reveal({ children, className = '' }) {
 export default function Landing() {
   return (
     <>
-      <nav className="lp-nav">
-        <span className="lp-logo">
-          <img className="lp-logo-mark" src="/styles/logo1.3.svg" alt="CPP Logo" />CPP
-        </span>
-        <div className="lp-nav-actions">
-          <ThemeToggle className="theme-toggle-light" />
-          <a className="lp-login-btn" href="/auth/">Login</a>
-        </div>
-      </nav>
+      <NavBar variant="landing" />
 
       <div className="lp-hero-wrap">
         <div className="lp-bg-grid"></div>
@@ -59,6 +52,8 @@ export default function Landing() {
             <a className="btn btn-gradient" href="/auth/">Jetzt starten</a>
             <a className="btn btn-ghost" href="/status">Live-Status ansehen</a>
           </div>
+
+          <HeroOrbit />
 
           <div className="lp-mock fade-up" style={{ animationDelay: '0.32s' }}>
             <div className="lp-mock-bar">

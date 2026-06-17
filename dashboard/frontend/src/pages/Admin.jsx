@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ThemeToggle from '../components/ThemeToggle.jsx';
+import NavBar from '../components/NavBar.jsx';
 import ModuleCard from '../components/ModuleCard.jsx';
 import AddModuleModal from '../components/AddModuleModal.jsx';
 import DeployLogModal from '../components/DeployLogModal.jsx';
@@ -27,14 +27,12 @@ export default function Admin() {
 
   return (
     <>
+      <NavBar />
       <header className="overview-header">
         <div className="overview-header-inner">
           <div>
             <p className="overview-eyebrow">Collaboration &amp; Planning Platform</p>
             <h1 className="overview-title">Admin Dashboard</h1>
-          </div>
-          <div className="overview-header-actions">
-            <ThemeToggle className="theme-toggle" />
           </div>
         </div>
       </header>

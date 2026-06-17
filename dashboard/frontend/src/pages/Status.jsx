@@ -1,4 +1,4 @@
-import ThemeToggle from '../components/ThemeToggle.jsx';
+import NavBar from '../components/NavBar.jsx';
 import ModuleCard from '../components/ModuleCard.jsx';
 import useModules from '../hooks/useModules.js';
 import '../styles/status.css';
@@ -9,6 +9,7 @@ export default function Status() {
 
   return (
     <>
+      <NavBar />
       <header className="overview-header">
         <div className="overview-header-inner">
           <div>
@@ -20,7 +21,6 @@ export default function Status() {
               <span className="overview-summary-count">{upCount}/{modules.length}</span>
               <span className="overview-summary-label">Module online</span>
             </div>
-            <ThemeToggle className="theme-toggle" />
           </div>
         </div>
       </header>

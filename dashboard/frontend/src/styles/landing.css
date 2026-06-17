@@ -45,91 +45,6 @@ body {
     linear-gradient(90deg, rgba(136, 139, 191, 0.12) 1px, transparent 1px);
 }
 
-.lp-nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px clamp(24px, 6vw, 96px);
-  backdrop-filter: blur(12px);
-  background: rgba(245, 243, 250, 0.7);
-  border-bottom: 1px solid rgba(16, 10, 25, 0.06);
-}
-
-[data-theme="dark"] .lp-nav {
-  background: rgba(11, 7, 18, 0.7);
-  border-bottom-color: rgba(246, 243, 245, 0.08);
-}
-
-.lp-logo {
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.lp-logo-mark {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  display: inline-block;
-}
-
-.lp-nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.lp-login-btn {
-  font-family: 'Noto Sans', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
-  color: white;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: 0 4px 14px rgba(90, 88, 166, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.lp-login-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(90, 88, 166, 0.45);
-}
-
-.theme-toggle-light {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(16, 10, 25, 0.12);
-  background: transparent;
-  color: var(--font-color);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.15s ease, transform 0.15s ease;
-}
-
-[data-theme="dark"] .theme-toggle-light {
-  border-color: rgba(246, 243, 245, 0.18);
-}
-
-.theme-toggle-light:hover {
-  background-color: rgba(90, 88, 166, 0.1);
-  transform: rotate(15deg);
-}
-
 /* Hero / Attention */
 .lp-hero-wrap {
   position: relative;
@@ -245,6 +160,95 @@ body {
 .btn-ghost:hover {
   background-color: rgba(90, 88, 166, 0.08);
   border-color: var(--accent-color);
+}
+
+/* Hero orbit animation */
+.lp-orbit {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 480px);
+  height: auto;
+  margin: clamp(24px, 4vw, 40px) auto 0;
+}
+
+.lp-orbit-line {
+  stroke: var(--accent-color);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 5;
+  opacity: 0.35;
+  animation: orbitDash 6s linear infinite;
+}
+
+[data-theme="dark"] .lp-orbit-line {
+  stroke: var(--light-purple);
+  opacity: 0.45;
+}
+
+@keyframes orbitDash {
+  to { stroke-dashoffset: -180; }
+}
+
+.lp-orbit-core {
+  fill: var(--accent-color);
+  filter: drop-shadow(0 0 10px rgba(90, 88, 166, 0.6));
+}
+
+.lp-orbit-core-ring {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 1.5;
+  opacity: 0.5;
+  transform-origin: 210px 130px;
+  animation: orbitRingPulse 2.4s ease-out infinite;
+}
+
+@keyframes orbitRingPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.lp-orbit-node {
+  animation: orbitFadeIn 0.6s ease both;
+}
+
+@keyframes orbitFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lp-orbit-node-dot {
+  fill: var(--pink-color);
+}
+
+.lp-orbit-node-pulse {
+  fill: none;
+  stroke: var(--pink-color);
+  stroke-width: 1.5;
+  opacity: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbitNodePulse 2.8s ease-out infinite;
+}
+
+@keyframes orbitNodePulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.lp-orbit-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--font-color);
+  font-family: 'Noto Sans', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-orbit-line,
+  .lp-orbit-core-ring,
+  .lp-orbit-node-pulse {
+    animation: none;
+  }
 }
 
 /* Hero mockup */
