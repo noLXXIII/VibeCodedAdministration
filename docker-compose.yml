@@ -104,7 +104,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team1.rule=PathPrefix(`/chat`)
-      - traefik.http.services.team1.loadbalancer.server.port=8001
+      - traefik.http.services.team1.loadbalancer.server.port=80
     restart: unless-stopped
 
   team2-dateimanagement:
@@ -113,7 +113,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team2.rule=PathPrefix(`/files`)
-      - traefik.http.services.team2.loadbalancer.server.port=8002
+      - traefik.http.services.team2.loadbalancer.server.port=80
     restart: unless-stopped
 
   team4-projektplanung:
@@ -122,7 +122,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team4.rule=PathPrefix(`/planning`)
-      - traefik.http.services.team4.loadbalancer.server.port=8004
+      - traefik.http.services.team4.loadbalancer.server.port=80
     restart: unless-stopped
 
   team5-userverwaltung:
@@ -131,7 +131,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team5.rule=PathPrefix(`/users`)
-      - traefik.http.services.team5.loadbalancer.server.port=8005
+      - traefik.http.services.team5.loadbalancer.server.port=80
     restart: unless-stopped
 
 volumes:
