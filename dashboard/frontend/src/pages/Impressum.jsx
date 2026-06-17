@@ -16,8 +16,9 @@ export default function Impressum() {
 
       <h2>Kontakt</h2>
       <p>
-        E-Mail: kontakt@platzhalter.rh-koeln.de<br />
-        Telefon: +49 (0)221 00000-00
+        Telefon: +49 221 20302-0<br />
+        Telefax: +49 221 20302-6100<br />
+        E-Mail: info@rh-koeln.de
       </p>
 
       <h2>Projektkontext</h2>

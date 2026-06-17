@@ -7,7 +7,7 @@ export default function Datenschutz() {
       <p>
         Rheinische Hochschule Köln<br />
         Vogelsanger Straße 295, 50825 Köln<br />
-        E-Mail: datenschutz@platzhalter.rh-koeln.de
+        E-Mail: info@rh-koeln.de
       </p>
 
       <h2>Erhobene Daten</h2>
