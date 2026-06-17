@@ -4,7 +4,7 @@
       "name": "Auth (Authentik)",
       "team": 3,
       "route": "/auth",
-      "healthCheck": "http://authentik-server:9000/-/health/live/",
+      "healthCheck": "http://authentik-server:9000/auth/-/health/live/",
       "docsUrl": "https://docs.goauthentik.io/"
     },
     {
