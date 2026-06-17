@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CPP — Collaboration & Planning Platform</title>
+  <link rel="stylesheet" href="/styles/Stylesheet.css" />
+  <link rel="stylesheet" href="/landing.css" />
+  <script>
+    (function () {
+      if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+</head>
+<body>
+  <nav class="lp-nav">
+    <span class="lp-logo"><span class="lp-logo-mark"></span>CPP</span>
+    <div class="lp-nav-actions">
+      <button id="theme-toggle" class="theme-toggle-light" type="button" aria-label="Theme umschalten">🌙</button>
+      <a class="lp-login-btn" href="/auth/">Login</a>
+    </div>
+  </nav>
+
+  <!-- Attention / Impuls -->
+  <div class="lp-hero-wrap">
+    <div class="lp-bg-grid"></div>
+    <div class="lp-glow lp-glow-1"></div>
+    <div class="lp-glow lp-glow-2"></div>
+    <section class="lp-hero">
+      <span class="lp-eyebrow fade-up">Für Hackathon-Teams gebaut</span>
+      <h1 class="fade-up" style="animation-delay: 0.08s;">Eine Plattform für <span class="accent">Kommunikation, Dateien, Planung &amp; Userverwaltung</span></h1>
+      <p class="fade-up" style="animation-delay: 0.16s;">CPP bringt alle Module deines Teams unter einem Dach zusammen — ein Login, ein Dashboard, null Reibungsverluste.</p>
+      <div class="lp-hero-actions fade-up" style="animation-delay: 0.24s;">
+        <a class="btn btn-gradient" href="/auth/">Jetzt starten</a>
+        <a class="btn btn-ghost" href="/overview">Live-Status ansehen</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Interest / Fakten -->
+  <section class="lp-section reveal">
+    <h2 class="lp-section-title">Fakten, die zählen</h2>
+    <p class="lp-section-subtitle">Gebaut von Team 3 als zentrale Klebstoff-Schicht zwischen fünf eigenständigen Modul-Teams.</p>
+    <div class="lp-facts-grid">
+      <div class="lp-fact-card">
+        <div class="lp-fact-icon">🔒</div>
+        <h3>Ein Login für alles</h3>
+        <p>Zentrale Authentifizierung über Authentik — ein Konto für sämtliche Module.</p>
+      </div>
+      <div class="lp-fact-card">
+        <div class="lp-fact-icon">⚡</div>
+        <h3>Live-Health-Monitoring</h3>
+        <p>Jedes Modul meldet seinen Status in Echtzeit — transparent für alle Teams.</p>
+      </div>
+      <div class="lp-fact-card">
+        <div class="lp-fact-icon">🧩</div>
+        <h3>5 Module, 1 Plattform</h3>
+        <p>Kommunikation, Dateimanagement, Projektplanung, Userverwaltung und Auth — nahtlos verzahnt.</p>
+      </div>
+      <div class="lp-fact-card">
+        <div class="lp-fact-icon">🔐</div>
+        <h3>HTTPS by default</h3>
+        <p>Verschlüsselte Verbindung via Let's Encrypt auf jeder Route der Plattform.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Desire / Module -->
+  <section class="lp-section reveal">
+    <h2 class="lp-section-title">Alle Module auf einen Blick</h2>
+    <p class="lp-section-subtitle">Jedes Team bringt seinen eigenen Microservice mit — CPP führt sie zu einer Plattform zusammen.</p>
+    <div class="lp-modules-strip">
+      <div class="lp-module-chip"><span class="lp-module-chip-dot"></span><span>Kommunikation</span></div>
+      <div class="lp-module-chip"><span class="lp-module-chip-dot"></span><span>Dateimanagement</span></div>
+      <div class="lp-module-chip"><span class="lp-module-chip-dot"></span><span>Projektplanung</span></div>
+      <div class="lp-module-chip"><span class="lp-module-chip-dot"></span><span>Userverwaltung</span></div>
+      <div class="lp-module-chip"><span class="lp-module-chip-dot"></span><span>Auth (Authentik)</span></div>
+    </div>
+  </section>
+
+  <!-- Desire / Testimonials -->
+  <section class="lp-section reveal">
+    <h2 class="lp-section-title">Was Teams sagen</h2>
+    <p class="lp-section-subtitle">Stimmen aus den Modul-Teams, die täglich mit CPP arbeiten.</p>
+    <div class="lp-testimonials-grid">
+      <div class="lp-testimonial-card">
+        <p class="lp-testimonial-quote">"Endlich müssen wir uns nicht mehr um eigene Auth-Logik kümmern — ein Login reicht für alles."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">N</div>
+          <div>
+            <p class="lp-testimonial-author-name">Team Userverwaltung</p>
+            <p class="lp-testimonial-author-role">Gruppe 5</p>
+          </div>
+        </div>
+      </div>
+      <div class="lp-testimonial-card">
+        <p class="lp-testimonial-quote">"Das Health-Dashboard zeigt uns sofort, wenn ein Modul down ist — kein Rätselraten mehr."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">K</div>
+          <div>
+            <p class="lp-testimonial-author-name">Team Projektplanung</p>
+            <p class="lp-testimonial-author-role">Gruppe 4</p>
+          </div>
+        </div>
+      </div>
+      <div class="lp-testimonial-card">
+        <p class="lp-testimonial-quote">"Onboarding neuer Module dauert dank klarer Konventionen nur noch Minuten."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">J</div>
+          <div>
+            <p class="lp-testimonial-author-name">Team Dateimanagement</p>
+            <p class="lp-testimonial-author-role">Gruppe 2</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Action -->
+  <section class="lp-cta reveal">
+    <h2>Bereit, dich anzumelden?</h2>
+    <p>Ein Klick zu allen Modulen der Collaboration &amp; Planning Platform.</p>
+    <a class="btn" href="/auth/">Jetzt einloggen</a>
+  </section>
+
+  <footer class="lp-footer">
+    CPP — Collaboration &amp; Planning Platform · Team 3
+  </footer>
+
+  <script>
+    var btn = document.getElementById('theme-toggle');
+    function applyIcon() {
+      btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    }
+    applyIcon();
+    btn.addEventListener('click', function () {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      applyIcon();
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+  </script>
+</body>
+</html>

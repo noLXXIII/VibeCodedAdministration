@@ -103,8 +103,6 @@ services:
       - traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)
       - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
       - traefik.http.routers.dashboard.tls.domains[0].main=hackathon.amogusdrip.de
-      - traefik.http.routers.dashboard.middlewares=dashboard-stripprefix
-      - traefik.http.middlewares.dashboard-stripprefix.stripprefix.prefixes=/admin
       - traefik.http.services.dashboard.loadbalancer.server.port=3000
       - traefik.http.routers.overview.rule=PathPrefix(`/overview`)
       - traefik.http.routers.overview.tls.certresolver=letsencrypt
@@ -114,6 +112,11 @@ services:
       - traefik.http.routers.dashboard-styles.tls.certresolver=letsencrypt
       - traefik.http.routers.dashboard-styles.tls.domains[0].main=hackathon.amogusdrip.de
       - traefik.http.routers.dashboard-styles.service=dashboard
+      - traefik.http.routers.landing.rule=PathPrefix(`/`)
+      - traefik.http.routers.landing.priority=1
+      - traefik.http.routers.landing.tls.certresolver=letsencrypt
+      - traefik.http.routers.landing.tls.domains[0].main=hackathon.amogusdrip.de
+      - traefik.http.routers.landing.service=dashboard
     restart: unless-stopped
 
   # --- Platzhalter für Team-Services ---

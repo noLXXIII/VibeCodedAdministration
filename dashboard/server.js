@@ -43,6 +43,9 @@ app.get('/api/modules', (req, res) => {
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'landing.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+
 app.get('/overview', (req, res) => {
   const upCount = modules.filter((mod) => statusByName[mod.name] === 'up').length;
   const cards = modules
