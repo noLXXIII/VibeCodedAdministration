@@ -45,6 +45,7 @@ services:
       - AUTHENTIK_POSTGRESQL__NAME=${AUTHENTIK_PG_DB:-authentik}
       - AUTHENTIK_POSTGRESQL__PASSWORD=${AUTHENTIK_PG_PASS}
       - AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+      - AUTHENTIK_WEB__PATH=/auth/
     volumes:
       - authentik-media:/media
       - authentik-templates:/templates
@@ -54,8 +55,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.rule=PathPrefix(`/auth`)
-      - traefik.http.routers.auth.middlewares=auth-stripprefix
-      - traefik.http.middlewares.auth-stripprefix.stripprefix.prefixes=/auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
     restart: unless-stopped
 
