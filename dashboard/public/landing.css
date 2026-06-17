@@ -464,6 +464,30 @@ body {
   line-height: 1.5;
 }
 
+.lp-fact-card-soon {
+  position: relative;
+  border-style: dashed;
+  border-color: rgba(90, 88, 166, 0.3);
+}
+
+.lp-soon-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(90, 88, 166, 0.12);
+  color: var(--accent-color);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+[data-theme="dark"] .lp-soon-badge {
+  background: rgba(136, 139, 191, 0.2);
+}
+
 /* Module strip */
 .lp-modules-strip {
   display: grid;
