@@ -3,6 +3,7 @@ services:
     image: traefik:v3.7
     container_name: traefik
     command:
+      - --log.level=INFO
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
