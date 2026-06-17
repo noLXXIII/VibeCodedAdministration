@@ -1,0 +1,263 @@
+/*
+ * Central, swappable theme. The FIRST block is the shared design-token contract
+ * used across modules (palette, spacing, type, the .btn/.input-field utilities).
+ * The SECOND block maps those tokens onto the semantic names this module's
+ * tag-level CSS (base.css / layout.css) consumes, and adds OS-based dark mode
+ * via prefers-color-scheme.  Replace the token values to re-theme everything.
+ */
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&display=swap');
+
+/* ---------- Shared design tokens ---------- */
+:root {
+  color-scheme: light;
+
+  /* Colors */
+  --background-color: #F6F3F5;
+  --font-color: #100A19;
+  --accent-color: #5A58A6;
+  --success-color: #6BCF7F;
+  --in-progress-color: #FFD700;
+  --error-color: #FF6B6B;
+  /* Extra Colours */
+  --green-color: #6B8E23;
+  --pink-color: #E97BB0;
+  --gray-color: #66606D;
+  --light-purple: #888BBF;
+
+  /* User colors (pastels for light mode) */
+  --user-color-0: #e6f7ff;
+  --user-color-1: #f6ffed;
+  --user-color-2: #fffb8f;
+  --user-color-3: #ffe7ba;
+  --user-color-4: #ffd6e7;
+  --user-color-5: #f0f5ff;
+  --user-color-6: #efdbff;
+  --user-color-7: #d9f7be;
+
+  /* Surfaces (derived; overridden in dark mode) */
+  --surface-color: #FFFFFF;
+  --surface-alt-color: #ECE8EF;
+  --border-color: #D7D2DD;
+  --muted-color: #66606D;
+
+  /* Sizes (marketing scale; app uses the smaller -app- sizes below) */
+  --font-size-l: 52px;
+  --font-size-m: 42px;
+  --font-size-subtitle-l: 38px;
+  --font-size-text-big: 26px;
+  --font-size-text-main: 20px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-s: 8px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 40px;
+  --spacing-xxl: 48px;
+
+  /* Borders */
+  --thin-border: 2px;
+  --thick-border: 4px;
+  --border-radius-l: 8px;
+  --border-radius-s: 4px;
+
+  /* Margins */
+  --margin-side: 100px;
+}
+
+/* ---------- Semantic mapping for this module's tag-level CSS ---------- */
+:root {
+  /* Colors */
+  --color-bg: var(--background-color);
+  --color-surface: var(--surface-color);
+  --color-surface-alt: var(--surface-alt-color);
+  --color-border: var(--border-color);
+  --color-text: var(--font-color);
+  --color-text-muted: var(--muted-color);
+
+  --color-primary: var(--accent-color);
+  --color-primary-hover: var(--light-purple);
+  --color-primary-contrast: #ffffff;
+
+  --color-danger: var(--error-color);
+  --color-success: var(--success-color);
+  --color-warning: var(--in-progress-color);
+
+  /* Status accents (Kanban columns) */
+  --color-status-todo: var(--gray-color);
+  --color-status-progress: var(--accent-color);
+  --color-status-done: var(--success-color);
+
+  /* Typography (app-appropriate sizes; same Noto Sans family) */
+  --font-family: 'Noto Sans', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-size-base: 16px;
+  --font-size-sm: 14px;
+  --font-size-lg: 20px;
+  --font-weight-bold: 600;
+  --line-height: 1.5;
+
+  /* Spacing scale */
+  --space-1: var(--spacing-xs);
+  --space-2: var(--spacing-s);
+  --space-3: 12px;
+  --space-4: var(--spacing-m);
+  --space-5: var(--spacing-l);
+  --space-6: var(--spacing-xl);
+
+  /* Radius & shadow */
+  --radius-sm: var(--border-radius-s);
+  --radius-md: var(--border-radius-l);
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.16);
+
+  /* Layout */
+  --header-height: 56px;
+  --sidebar-width: 220px;
+  --content-max-width: 1280px;
+
+  /* Feedback surfaces (token-based so they adapt to dark mode) */
+  --danger-surface: color-mix(in srgb, var(--error-color) 18%, var(--surface-color));
+}
+
+/* ---------- Dark mode ---------- */
+/* Toggled via [data-theme="dark"] on <html>. The theme controller sets it from
+   the OS preference by default, with an optional manual override. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Exact overrides from the shared theme spec */
+  --background-color: #100A19;
+  --font-color: #F6F3F5;
+  --accent-color: #888BBF;
+  --light-purple: #5A58A6;
+  --green-color: #5DBB63;
+
+  /* User colors (darker muted tones for dark mode) */
+  --user-color-0: #1a365d;
+  --user-color-1: #1c4532;
+  --user-color-2: #5f5a11;
+  --user-color-3: #6b3a16;
+  --user-color-4: #6b1b42;
+  --user-color-5: #1e285a;
+  --user-color-6: #3b1959;
+  --user-color-7: #325c1d;
+
+  /* App surfaces (extend the spec so cards/tables/columns read well on dark) */
+  --surface-color: #1B1525;
+  --surface-alt-color: #261F33;
+  --border-color: #3A3147;
+  --muted-color: #A79FB2;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Shared utility classes (cross-module contract) ---------- */
+.container {
+  margin-left: var(--margin-side);
+  margin-right: var(--margin-side);
+}
+
+.btn {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  padding: 12px 24px;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius-l);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn:hover:not(:disabled) {
+  background-color: var(--light-purple);
+}
+.btn:disabled {
+  background-color: var(--gray-color);
+  cursor: not-allowed;
+}
+
+.input-field {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  padding: 12px 24px;
+  border: var(--thin-border) solid var(--gray-color);
+  border-radius: var(--border-radius-s);
+  outline: none;
+  background: var(--surface-color);
+}
+.input-field:focus {
+  border-color: var(--accent-color);
+}
+.input-field.error {
+  border-color: var(--error-color);
+}
+.input-field.success {
+  border-color: var(--success-color);
+}
+
+.feedback-success {
+  color: var(--success-color);
+}
+.feedback-in-progress {
+  color: var(--in-progress-color);
+}
+.feedback-error {
+  color: var(--error-color);
+}
+
+/* Typography helpers (shared contract) */
+.title-l {
+  font-weight: 600;
+  font-size: var(--font-size-l);
+  line-height: 1.2;
+}
+.subtitle-l {
+  font-weight: 400;
+  font-size: var(--font-size-subtitle-l);
+  line-height: 1.3;
+}
+.text-big {
+  font-weight: 400;
+  font-size: var(--font-size-text-big);
+  line-height: 1.4;
+}
+.text-main {
+  font-weight: 400;
+  font-size: var(--font-size-text-main);
+  line-height: 1.5;
+}
+.rounded {
+  border-radius: var(--border-radius-l);
+}
+
+/* Spacing utilities (shared contract) */
+.mt-1 { margin-top: var(--spacing-s); }
+.mt-2 { margin-top: var(--spacing-m); }
+.mt-3 { margin-top: var(--spacing-l); }
+.mb-1 { margin-bottom: var(--spacing-s); }
+.mb-2 { margin-bottom: var(--spacing-m); }
+.mb-3 { margin-bottom: var(--spacing-l); }
+.ml-1 { margin-left: var(--spacing-s); }
+.ml-2 { margin-left: var(--spacing-m); }
+.ml-3 { margin-left: var(--spacing-l); }
+.mr-1 { margin-right: var(--spacing-s); }
+.mr-2 { margin-right: var(--spacing-m); }
+.mr-3 { margin-right: var(--spacing-l); }
+.pt-1 { padding-top: var(--spacing-s); }
+.pt-2 { padding-top: var(--spacing-m); }
+.pt-3 { padding-top: var(--spacing-l); }
+.pb-1 { padding-bottom: var(--spacing-s); }
+.pb-2 { padding-bottom: var(--spacing-m); }
+.pb-3 { padding-bottom: var(--spacing-l); }
+.pl-1 { padding-left: var(--spacing-s); }
+.pl-2 { padding-left: var(--spacing-m); }
+.pl-3 { padding-left: var(--spacing-l); }
+.pr-1 { padding-right: var(--spacing-s); }
+.pr-2 { padding-right: var(--spacing-m); }
+.pr-3 { padding-right: var(--spacing-l); }
