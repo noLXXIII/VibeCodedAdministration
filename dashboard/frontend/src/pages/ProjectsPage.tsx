@@ -75,7 +75,7 @@ export function ProjectsPage() {
             <article key={p.id} className="col">
               <div className="row wrap">
                 <h3 style={{ margin: 0 }}>
-                  <Link to={`/projects/${p.id}/board`}>{p.name}</Link>
+                  <Link to={`projects/${p.id}/board`}>{p.name}</Link>
                 </h3>
                 <span className="spacer" />
                 {(me?.admin || p.createdBy === me?.subject) && (

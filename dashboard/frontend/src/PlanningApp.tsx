@@ -10,6 +10,9 @@ import { TasklistPage } from "./pages/TasklistPage";
 import { CalendarPage } from "./pages/CalendarPage";
 import { MembersPage } from "./pages/MembersPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
+import { UserSwitcher } from "./components/UserSwitcher";
+import { ThemeToggle } from "./components/PlanningThemeToggle";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import "./styles/theme.css";
 import "./styles/base.css";
 import "./styles/layout.css";
@@ -22,7 +25,7 @@ export default function App() {
       <I18nProvider>
         <AuthProvider>
           <NavBar variant="app" />
-          <main className="app-main">
+          <main className="app-main" style={{ paddingBottom: "60px" }}>
             <Routes>
               <Route path="/" element={<ProjectsPage />} />
               <Route path="/projects/:projectId" element={<ProjectLayout />}>
@@ -37,6 +40,26 @@ export default function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+          
+          <div style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "8px 16px",
+            background: "var(--bg-panel)",
+            borderTop: "1px solid var(--border)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "16px",
+            boxShadow: "0 -2px 10px rgba(0,0,0,0.1)"
+          }}>
+            <UserSwitcher />
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
         </AuthProvider>
       </I18nProvider>
     </ThemeProvider>
