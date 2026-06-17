@@ -43,6 +43,26 @@ app.get('/api/modules', (req, res) => {
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
+app.get('/overview', (req, res) => {
+  const rows = modules
+    .map((mod) => {
+      const status = statusByName[mod.name] || 'unknown';
+      return `<tr><td>${mod.name}</td><td>${status}</td></tr>`;
+    })
+    .join('\n');
+  res.send(`<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"><title>Modul-Übersicht</title></head>
+<body>
+  <h1>Modul-Übersicht</h1>
+  <table border="1" cellpadding="6">
+    <tr><th>Name</th><th>Status</th></tr>
+    ${rows}
+  </table>
+</body>
+</html>`);
+});
+
 loadModules();
 pollHealth();
 setInterval(pollHealth, POLL_INTERVAL_MS);
