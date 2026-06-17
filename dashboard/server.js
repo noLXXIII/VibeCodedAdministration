@@ -285,7 +285,8 @@ app.post('/api/modules/:route(.*)/redeploy', (req, res) => {
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+const FRONTEND_ROUTES = ['/', '/admin', '/status'];
+app.get(FRONTEND_ROUTES, (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 loadModules();
 pollHealth();
