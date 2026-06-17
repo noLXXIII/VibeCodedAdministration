@@ -649,8 +649,27 @@ body {
 .lp-footer {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   text-align: center;
   padding: var(--spacing-xl) clamp(24px, 6vw, 96px) var(--spacing-xxl);
   color: var(--gray-color);
   font-size: 14px;
+}
+
+.lp-footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.lp-footer-links a {
+  color: var(--gray-color);
+  text-decoration: none;
+}
+
+.lp-footer-links a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
 }

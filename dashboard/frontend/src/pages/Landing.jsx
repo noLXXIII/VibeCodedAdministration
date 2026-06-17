@@ -1,7 +1,14 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar.jsx';
 import HeroOrbit from '../components/HeroOrbit.jsx';
+import FeatureSection from '../components/features/FeatureSection.jsx';
+import ChatAnimation from '../components/features/ChatAnimation.jsx';
+import FileUploadAnimation from '../components/features/FileUploadAnimation.jsx';
+import PlanningAnimation from '../components/features/PlanningAnimation.jsx';
+import ModuleAddAnimation from '../components/features/ModuleAddAnimation.jsx';
 import '../styles/landing.css';
+import '../styles/features.css';
 
 function Reveal({ children, className = '' }) {
   const ref = useRef(null);
@@ -108,32 +115,46 @@ export default function Landing() {
         </div>
       </Reveal>
 
-      <Reveal className="lp-section">
-        <h2 className="lp-section-title">Fakten, die zählen</h2>
-        <p className="lp-section-subtitle">Eine zentrale Schicht, die alle Module deiner Organisation nahtlos verbindet.</p>
-        <div className="lp-facts-grid">
-          <div className="lp-fact-card">
-            <div className="lp-fact-icon">🔒</div>
-            <h3>Ein Login für alles</h3>
-            <p>Zentrale Authentifizierung — ein Konto für sämtliche Module.</p>
-          </div>
-          <div className="lp-fact-card">
-            <div className="lp-fact-icon">⚡</div>
-            <h3>Live-Health-Monitoring</h3>
-            <p>Jedes Modul meldet seinen Status in Echtzeit — transparent für alle Beteiligten.</p>
-          </div>
-          <div className="lp-fact-card">
-            <div className="lp-fact-icon">🧩</div>
-            <h3>Mehrere Module, 1 Plattform</h3>
-            <p>Kommunikation, Dateimanagement, Projektplanung, Userverwaltung und Auth — nahtlos verzahnt.</p>
-          </div>
-          <div className="lp-fact-card">
-            <div className="lp-fact-icon">🔐</div>
-            <h3>HTTPS by default</h3>
-            <p>Verschlüsselte Verbindung auf jeder Route der Plattform.</p>
-          </div>
-        </div>
-      </Reveal>
+      <section className="feat-section">
+        <Reveal>
+          <h2 className="lp-section-title">Die Module im Detail</h2>
+          <p className="lp-section-subtitle">Vier Bausteine, die zusammen den Arbeitsalltag deines Teams tragen.</p>
+        </Reveal>
+
+        <FeatureSection
+          eyebrow="Kommunikation"
+          title="Chat ohne Kontextwechsel"
+          text="Nachrichten, Threads und Benachrichtigungen direkt neben Dateien und Aufgaben — kein Wechsel zwischen Tools mehr nötig."
+          bullets={['Echtzeit-Nachrichten', 'Team- & Direktnachrichten', 'Tippindikator & Lesebestätigung']}
+          animation={<ChatAnimation />}
+        />
+
+        <FeatureSection
+          eyebrow="Dateimanagement"
+          title="Dateien landen, wo sie hingehören"
+          text="Hochladen, ablegen, freigeben — mit klarer Ordnerstruktur und sofortigem Zugriff für alle Berechtigten."
+          bullets={['Drag & Drop Upload', 'Versionierung', 'Granulare Freigaben']}
+          animation={<FileUploadAnimation />}
+          reverse
+        />
+
+        <FeatureSection
+          eyebrow="Projektplanung"
+          title="Vom To-do bis Done sichtbar"
+          text="Kanban-Boards zeigen jederzeit, woran gerade gearbeitet wird und was als Nächstes ansteht."
+          bullets={['Drag-and-Drop-Boards', 'Fälligkeitsdaten & Prioritäten', 'Fortschritt in Echtzeit']}
+          animation={<PlanningAnimation />}
+        />
+
+        <FeatureSection
+          eyebrow="Modulerweiterung"
+          title="Neue Module in Minuten andocken"
+          text="Über das Admin-Dashboard wird ein neues Modul registriert, gebaut und deployt — automatisch eingebunden in die Plattform."
+          bullets={['Repo verknüpfen & deployen', 'Live-Deploy-Log', 'Sofort im Status-Dashboard sichtbar']}
+          animation={<ModuleAddAnimation />}
+          reverse
+        />
+      </section>
 
       <Reveal className="lp-section">
         <h2 className="lp-section-title">Alle Module auf einen Blick</h2>
@@ -197,7 +218,14 @@ export default function Landing() {
         <a className="btn" href="/auth/">Jetzt einloggen</a>
       </Reveal>
 
-      <footer className="lp-footer">CPP — Collaboration &amp; Planning Platform</footer>
+      <footer className="lp-footer">
+        <span>CPP — Collaboration &amp; Planning Platform</span>
+        <nav className="lp-footer-links">
+          <Link to="/about">Über uns</Link>
+          <Link to="/impressum">Impressum</Link>
+          <Link to="/datenschutz">Datenschutz</Link>
+        </nav>
+      </footer>
     </>
   );
 }

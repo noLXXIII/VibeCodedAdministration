@@ -17,9 +17,13 @@ export default function NavBar({ variant = 'app' }) {
         <span>CPP</span>
       </NavLink>
 
-      {!isLanding && (
-        <div className="cpp-nav-links">
-          {NAV_LINKS.map((link) => (
+      <div className="cpp-nav-links">
+        {isLanding ? (
+          <NavLink to="/about" className={({ isActive }) => `cpp-nav-link${isActive ? ' is-active' : ''}`}>
+            Über uns
+          </NavLink>
+        ) : (
+          NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
@@ -27,9 +31,9 @@ export default function NavBar({ variant = 'app' }) {
             >
               {link.label}
             </NavLink>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
 
       <div className="cpp-nav-actions">
         {isLanding ? (
