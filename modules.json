@@ -1,4 +1,5 @@
 {
+  "repos": [],
   "modules": [
     {
       "name": "Auth (Authentik)",

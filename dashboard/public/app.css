@@ -1,4 +1,132 @@
-.overview-card-footer .btn {
-  margin-top: var(--spacing-s);
-  margin-right: 6px;
+.overview-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--spacing-m);
+}
+
+.overview-card-actions .btn {
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-l);
+}
+
+.admin-add-btn {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(90, 88, 166, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(90, 88, 166, 0.4);
+}
+
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 10, 25, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.admin-modal-overlay.hidden {
+  display: none;
+}
+
+.admin-modal {
+  background-color: white;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 64px rgba(16, 10, 25, 0.25);
+}
+
+[data-theme="dark"] .admin-modal {
+  background-color: #1A1424;
+}
+
+.admin-modal h2 {
+  margin: 0 0 var(--spacing-s) 0;
+}
+
+.admin-modal-subtitle {
+  color: var(--gray-color);
+  font-size: 14px;
+  margin: 0 0 var(--spacing-l) 0;
+}
+
+.admin-form-group {
+  margin-bottom: var(--spacing-m);
+}
+
+.admin-form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.admin-route-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-route-prefix {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  color: var(--gray-color);
+  font-size: 14px;
+}
+
+.admin-route-hint {
+  font-size: 12px;
+  color: var(--gray-color);
+  margin: 4px 0 0 0;
+}
+
+.admin-route-hint.error {
+  color: var(--error-color);
+}
+
+.admin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: var(--spacing-l);
+}
+
+.admin-modal-actions .btn {
+  margin: 0;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--font-color);
+  border: 1px solid var(--gray-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: rgba(102, 96, 109, 0.1);
 }
