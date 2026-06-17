@@ -6,7 +6,7 @@ import Impressum from './pages/Impressum.jsx';
 import Datenschutz from './pages/Datenschutz.jsx';
 import About from './pages/About.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
-import PlanningApp from './planning/App';
+import PlanningApp from './PlanningApp';
 
 export default function App() {
   return (

@@ -11,7 +11,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { MembersPage } from "./pages/MembersPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 // @ts-ignore - NavBar is a JSX component
-import NavBar from "../components/NavBar.jsx";
+import NavBar from "./components/NavBar.jsx";
 
 export default function App() {
   return (
