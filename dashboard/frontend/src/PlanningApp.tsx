@@ -10,6 +10,9 @@ import { TasklistPage } from "./pages/TasklistPage";
 import { CalendarPage } from "./pages/CalendarPage";
 import { MembersPage } from "./pages/MembersPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
+import "./styles/theme.css";
+import "./styles/base.css";
+import "./styles/layout.css";
 // @ts-ignore - NavBar is a JSX component
 import NavBar from "./components/NavBar.jsx";
 
