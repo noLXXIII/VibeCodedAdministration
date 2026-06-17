@@ -46,7 +46,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'landing.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
-app.get('/overview', (req, res) => {
+app.get('/status', (req, res) => {
   const upCount = modules.filter((mod) => statusByName[mod.name] === 'up').length;
   const cards = modules
     .map((mod) => {
@@ -73,7 +73,7 @@ app.get('/overview', (req, res) => {
   <meta charset="UTF-8" />
   <title>Modul-Übersicht</title>
   <link rel="stylesheet" href="/styles/Stylesheet.css" />
-  <link rel="stylesheet" href="/overview.css" />
+  <link rel="stylesheet" href="/status.css" />
   <script>
     (function () {
       var saved = localStorage.getItem('theme');

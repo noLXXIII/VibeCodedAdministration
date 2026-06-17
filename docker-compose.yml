@@ -104,10 +104,10 @@ services:
       - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
       - traefik.http.routers.dashboard.tls.domains[0].main=hackathon.amogusdrip.de
       - traefik.http.services.dashboard.loadbalancer.server.port=3000
-      - traefik.http.routers.overview.rule=PathPrefix(`/overview`)
-      - traefik.http.routers.overview.tls.certresolver=letsencrypt
-      - traefik.http.routers.overview.tls.domains[0].main=hackathon.amogusdrip.de
-      - traefik.http.routers.overview.service=dashboard
+      - traefik.http.routers.status.rule=PathPrefix(`/status`)
+      - traefik.http.routers.status.tls.certresolver=letsencrypt
+      - traefik.http.routers.status.tls.domains[0].main=hackathon.amogusdrip.de
+      - traefik.http.routers.status.service=dashboard
       - traefik.http.routers.dashboard-styles.rule=PathPrefix(`/styles`)
       - traefik.http.routers.dashboard-styles.tls.certresolver=letsencrypt
       - traefik.http.routers.dashboard-styles.tls.domains[0].main=hackathon.amogusdrip.de
