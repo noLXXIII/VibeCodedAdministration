@@ -71,6 +71,7 @@ routeInput.addEventListener('input', () => {
     ? `Pfad ${route} ist bereits vergeben`
     : `Erreichbar unter ${route}`;
   routeHint.classList.toggle('error', taken);
+  routeHint.classList.toggle('ok', !taken && routeInput.value.trim().length > 0);
 });
 
 addForm.addEventListener('submit', async (e) => {

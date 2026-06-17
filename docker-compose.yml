@@ -130,50 +130,9 @@ services:
       - traefik.http.routers.landing.service=dashboard
     restart: unless-stopped
 
-  # --- Platzhalter für Team-Services ---
-  # Sobald die Team-Repos als Submodule eingebunden sind, ersetzen wir die
-  # build/image-Zeile durch den jeweiligen Build-Context bzw. das Image des Teams.
-  # Port- und Routing-Konvention siehe Orga.md / docs/TEAM-CONVENTIONS.md.
-
-  team1-kommunikation:
-    image: nginx:alpine # Platzhalter, bis Team-1-Repo vorliegt
-    container_name: team1-kommunikation
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.team1.rule=PathPrefix(`/chat`)
-      - traefik.http.routers.team1.tls.certresolver=letsencrypt
-      - traefik.http.services.team1.loadbalancer.server.port=80
-    restart: unless-stopped
-
-  team2-dateimanagement:
-    image: nginx:alpine # Platzhalter, bis Team-2-Repo vorliegt
-    container_name: team2-dateimanagement
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.team2.rule=PathPrefix(`/files`)
-      - traefik.http.routers.team2.tls.certresolver=letsencrypt
-      - traefik.http.services.team2.loadbalancer.server.port=80
-    restart: unless-stopped
-
-  team4-projektplanung:
-    image: nginx:alpine # Platzhalter, bis Team-4-Repo vorliegt
-    container_name: team4-projektplanung
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.team4.rule=PathPrefix(`/planning`)
-      - traefik.http.routers.team4.tls.certresolver=letsencrypt
-      - traefik.http.services.team4.loadbalancer.server.port=80
-    restart: unless-stopped
-
-  team5-userverwaltung:
-    image: nginx:alpine # Platzhalter, bis Team-5-Repo vorliegt
-    container_name: team5-userverwaltung
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.team5.rule=PathPrefix(`/users`)
-      - traefik.http.routers.team5.tls.certresolver=letsencrypt
-      - traefik.http.services.team5.loadbalancer.server.port=80
-    restart: unless-stopped
+  # Team-Services werden nicht mehr als statische Platzhalter hier eingetragen,
+  # sondern über das Admin-Dashboard (/admin) per Git-Repo-URL registriert und
+  # automatisch deployed (siehe docs/TEAM-CONVENTIONS.md, Abschnitt 10).
 
 volumes:
   authentik-database:

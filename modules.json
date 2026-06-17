@@ -7,34 +7,6 @@
       "route": "/auth",
       "healthCheck": "http://authentik-server:9000/auth/-/health/live/",
       "docsUrl": "https://docs.goauthentik.io/"
-    },
-    {
-      "name": "Kommunikation",
-      "team": 1,
-      "route": "/chat",
-      "healthCheck": "http://team1-kommunikation:8001/health",
-      "docsUrl": "http://team1-kommunikation:8001/openapi.json"
-    },
-    {
-      "name": "Dateimanagement",
-      "team": 2,
-      "route": "/files",
-      "healthCheck": "http://team2-dateimanagement:8002/health",
-      "docsUrl": "http://team2-dateimanagement:8002/openapi.json"
-    },
-    {
-      "name": "Projektplanung",
-      "team": 4,
-      "route": "/planning",
-      "healthCheck": "http://team4-projektplanung:8004/health",
-      "docsUrl": "http://team4-projektplanung:8004/openapi.json"
-    },
-    {
-      "name": "Userverwaltung",
-      "team": 5,
-      "route": "/users",
-      "healthCheck": "http://team5-userverwaltung:8005/health",
-      "docsUrl": "http://team5-userverwaltung:8005/openapi.json"
     }
   ]
 }

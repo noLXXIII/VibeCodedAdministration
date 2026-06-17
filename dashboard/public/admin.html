@@ -38,37 +38,38 @@
       <h2>Neues Modul registrieren</h2>
       <p class="admin-modal-subtitle">Gemäß TEAM-CONVENTIONS.md: Health-Check, API-Doku und ein freier URL-Pfad sind Pflicht.</p>
       <form id="add-module-form">
-        <div class="admin-form-group">
-          <label for="field-name">Modulname</label>
-          <input id="field-name" class="input-field" type="text" required placeholder="z. B. Kommunikation" />
-        </div>
-        <div class="admin-form-group">
-          <label for="field-team">Team</label>
-          <input id="field-team" class="input-field" type="text" required placeholder="z. B. 1" />
-        </div>
-        <div class="admin-form-group">
-          <label for="field-route">URL-Pfad</label>
-          <div class="admin-route-row">
+        <div class="admin-form-grid">
+          <div class="admin-form-group span-2">
+            <label for="field-name">Modulname</label>
+            <input id="field-name" class="input-field" type="text" required placeholder="z. B. Kommunikation" />
+          </div>
+          <div class="admin-form-group">
+            <label for="field-team">Team</label>
+            <input id="field-team" class="input-field" type="text" required placeholder="z. B. 1" />
+          </div>
+          <div class="admin-form-group">
+            <label for="field-route">URL-Pfad</label>
             <input id="field-route" class="input-field" type="text" required placeholder="/mein-modul" />
           </div>
-          <p id="route-hint" class="admin-route-hint"></p>
-        </div>
-        <div class="admin-form-group">
-          <label for="field-health">Health-Check-URL</label>
-          <input id="field-health" class="input-field" type="text" required placeholder="http://service:port/health" />
-        </div>
-        <div class="admin-form-group">
-          <label for="field-docs">API-Doku-URL</label>
-          <input id="field-docs" class="input-field" type="text" required placeholder="http://service:port/openapi.json" />
-        </div>
-        <div class="admin-form-group">
-          <label for="field-admin">Admin-URL (optional)</label>
-          <input id="field-admin" class="input-field" type="text" placeholder="http://service:port/admin" />
-        </div>
-        <div class="admin-form-group">
-          <label for="field-repo">Git-Repo-URL (optional, für Auto-Deploy)</label>
-          <input id="field-repo" class="input-field" type="text" placeholder="https://github.com/org/repo.git" />
-          <p class="admin-route-hint">Repo benötigt eine lauffähige docker-compose.yml im Root (siehe TEAM-CONVENTIONS.md). Mehrere Module können dasselbe Repo referenzieren.</p>
+          <div class="admin-form-group span-2">
+            <p id="route-hint" class="admin-route-hint"></p>
+          </div>
+          <div class="admin-form-group span-2">
+            <label for="field-health">Health-Check-URL</label>
+            <input id="field-health" class="input-field" type="text" required placeholder="http://service:port/health" />
+          </div>
+          <div class="admin-form-group span-2">
+            <label for="field-docs">API-Doku-URL</label>
+            <input id="field-docs" class="input-field" type="text" required placeholder="http://service:port/openapi.json" />
+          </div>
+          <div class="admin-form-group span-2">
+            <label for="field-admin">Admin-URL <span class="admin-field-optional">(optional)</span></label>
+            <input id="field-admin" class="input-field" type="text" placeholder="http://service:port/admin" />
+          </div>
+          <div class="admin-form-group span-2">
+            <label for="field-repo">Git-Repo-URL <span class="admin-field-optional">(optional, für Auto-Deploy)</span></label>
+            <input id="field-repo" class="input-field" type="text" placeholder="https://github.com/org/repo.git" />
+          </div>
         </div>
         <div class="admin-modal-actions">
           <button id="add-module-cancel" class="btn btn-secondary" type="button">Abbrechen</button>

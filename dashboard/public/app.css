@@ -40,52 +40,93 @@
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(16, 10, 25, 0.45);
+  background: rgba(16, 10, 25, 0.55);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   z-index: 50;
+  animation: admin-fade-in 0.15s ease;
 }
 
 .admin-modal-overlay.hidden {
   display: none;
 }
 
+@keyframes admin-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .admin-modal {
   background-color: white;
   border-radius: 20px;
-  padding: 32px;
-  max-width: 480px;
+  padding: 36px;
+  max-width: 520px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 88vh;
   overflow-y: auto;
-  box-shadow: 0 32px 64px rgba(16, 10, 25, 0.25);
+  box-shadow: 0 32px 64px rgba(16, 10, 25, 0.3);
+  border: 1px solid rgba(102, 96, 109, 0.12);
 }
 
 [data-theme="dark"] .admin-modal {
   background-color: #1A1424;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .admin-modal h2 {
-  margin: 0 0 var(--spacing-s) 0;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-color), var(--light-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--accent-color);
 }
 
 .admin-modal-subtitle {
   color: var(--gray-color);
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.5;
   margin: 0 0 var(--spacing-l) 0;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-m);
 }
 
 .admin-form-group {
   margin-bottom: var(--spacing-m);
 }
 
+.admin-form-group.span-2 {
+  grid-column: 1 / -1;
+}
+
 .admin-form-group label {
   display: block;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 6px;
+  color: var(--font-color);
+}
+
+.admin-form-group .admin-field-optional {
+  font-weight: 400;
+  color: var(--gray-color);
+}
+
+.admin-form-group .input-field {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  font-size: 14px;
 }
 
 .admin-route-row {
@@ -103,11 +144,15 @@
 .admin-route-hint {
   font-size: 12px;
   color: var(--gray-color);
-  margin: 4px 0 0 0;
+  margin: 6px 0 0 0;
 }
 
 .admin-route-hint.error {
   color: var(--error-color);
+}
+
+.admin-route-hint.ok {
+  color: var(--success-color);
 }
 
 .admin-modal-actions {
@@ -115,10 +160,19 @@
   justify-content: flex-end;
   gap: 10px;
   margin-top: var(--spacing-l);
+  padding-top: var(--spacing-m);
+  border-top: 1px solid rgba(102, 96, 109, 0.12);
+}
+
+[data-theme="dark"] .admin-modal-actions {
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .admin-modal-actions .btn {
   margin: 0;
+  padding: 10px 22px;
+  font-size: 14px;
+  border-radius: 999px;
 }
 
 .btn-secondary {
