@@ -110,6 +110,10 @@ services:
       - traefik.http.routers.overview.tls.certresolver=letsencrypt
       - traefik.http.routers.overview.tls.domains[0].main=hackathon.amogusdrip.de
       - traefik.http.routers.overview.service=dashboard
+      - traefik.http.routers.dashboard-styles.rule=PathPrefix(`/styles`)
+      - traefik.http.routers.dashboard-styles.tls.certresolver=letsencrypt
+      - traefik.http.routers.dashboard-styles.tls.domains[0].main=hackathon.amogusdrip.de
+      - traefik.http.routers.dashboard-styles.service=dashboard
     restart: unless-stopped
 
   # --- Platzhalter für Team-Services ---

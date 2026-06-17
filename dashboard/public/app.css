@@ -1,3 +1,30 @@
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-l);
+  flex-wrap: wrap;
+}
+
+.theme-toggle-light {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: var(--thin-border) solid var(--gray-color);
+  background: transparent;
+  color: var(--font-color);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.theme-toggle-light:hover {
+  background-color: rgba(90, 88, 166, 0.1);
+}
+
 .modules-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

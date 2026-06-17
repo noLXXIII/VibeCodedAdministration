@@ -8,10 +8,20 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="title-l mt-3">CPP Admin Dashboard</h1>
-    <p class="text-main">Status aller Module der Collaboration &amp; Planning Platform</p>
+    <div class="dashboard-header mt-3">
+      <div>
+        <h1 class="title-l">CPP Admin Dashboard</h1>
+        <p class="text-main">Status aller Module der Collaboration &amp; Planning Platform</p>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-light" type="button" aria-label="Theme umschalten">🌙</button>
+    </div>
     <div id="modules" class="modules-grid mt-3"></div>
   </div>
+  <script>
+    (function () {
+      if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
   <script src="/app.js"></script>
 </body>
 </html>

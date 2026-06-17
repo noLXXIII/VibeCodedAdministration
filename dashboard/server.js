@@ -71,6 +71,12 @@ app.get('/overview', (req, res) => {
   <title>Modul-Übersicht</title>
   <link rel="stylesheet" href="/styles/Stylesheet.css" />
   <link rel="stylesheet" href="/overview.css" />
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
 </head>
 <body>
   <header class="overview-header">
@@ -79,9 +85,14 @@ app.get('/overview', (req, res) => {
         <p class="overview-eyebrow">Collaboration &amp; Planning Platform</p>
         <h1 class="overview-title">Modul-Übersicht</h1>
       </div>
-      <div class="overview-summary">
-        <span class="overview-summary-count">${upCount}/${modules.length}</span>
-        <span class="overview-summary-label">Module online</span>
+      <div class="overview-header-actions">
+        <div class="overview-summary">
+          <span class="overview-summary-count">${upCount}/${modules.length}</span>
+          <span class="overview-summary-label">Module online</span>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Theme umschalten">
+          <span class="theme-toggle-icon">🌙</span>
+        </button>
       </div>
     </div>
   </header>
@@ -90,6 +101,25 @@ app.get('/overview', (req, res) => {
       ${cards}
     </div>
   </main>
+  <script>
+    var btn = document.getElementById('theme-toggle');
+    var icon = btn.querySelector('.theme-toggle-icon');
+    function applyIcon() {
+      icon.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    }
+    applyIcon();
+    btn.addEventListener('click', function () {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      applyIcon();
+    });
+  </script>
 </body>
 </html>`);
 });
