@@ -96,6 +96,7 @@ services:
       - MODULES_CONFIG=/app/modules.json
     volumes:
       - ./modules.json:/app/modules.json:ro
+      - ./styles:/app/styles:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)
