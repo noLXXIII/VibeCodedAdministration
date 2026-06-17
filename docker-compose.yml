@@ -5,7 +5,12 @@ services:
     command:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
       - --api.dashboard=true
       - --api.insecure=true
     ports:
@@ -14,6 +19,7 @@ services:
       - "8080:8080" # Traefik-Dashboard (nur für Debugging, nicht produktiv exposen)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
     restart: unless-stopped
 
   authentik-postgresql:
@@ -55,6 +61,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.rule=PathPrefix(`/auth`)
+      - traefik.http.routers.auth.tls.certresolver=letsencrypt
       - traefik.http.routers.auth.middlewares=auth-trailingslash
       - traefik.http.middlewares.auth-trailingslash.redirectregex.regex=^(.*)/auth$$
       - traefik.http.middlewares.auth-trailingslash.redirectregex.replacement=$${1}/auth/
@@ -91,6 +98,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=PathPrefix(`/admin`)
+      - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
       - traefik.http.routers.dashboard.middlewares=dashboard-stripprefix
       - traefik.http.middlewares.dashboard-stripprefix.stripprefix.prefixes=/admin
       - traefik.http.services.dashboard.loadbalancer.server.port=3000
@@ -107,6 +115,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team1.rule=PathPrefix(`/chat`)
+      - traefik.http.routers.team1.tls.certresolver=letsencrypt
       - traefik.http.services.team1.loadbalancer.server.port=80
     restart: unless-stopped
 
@@ -116,6 +125,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team2.rule=PathPrefix(`/files`)
+      - traefik.http.routers.team2.tls.certresolver=letsencrypt
       - traefik.http.services.team2.loadbalancer.server.port=80
     restart: unless-stopped
 
@@ -125,6 +135,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team4.rule=PathPrefix(`/planning`)
+      - traefik.http.routers.team4.tls.certresolver=letsencrypt
       - traefik.http.services.team4.loadbalancer.server.port=80
     restart: unless-stopped
 
@@ -134,6 +145,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.team5.rule=PathPrefix(`/users`)
+      - traefik.http.routers.team5.tls.certresolver=letsencrypt
       - traefik.http.services.team5.loadbalancer.server.port=80
     restart: unless-stopped
 
@@ -142,3 +154,4 @@ volumes:
   authentik-redis:
   authentik-media:
   authentik-templates:
+  letsencrypt:
